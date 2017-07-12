@@ -1,6 +1,8 @@
 #include "testwindow.h"
 #include "ui_testwindow.h"
 
+#include <QDesktopWidget>
+
 TestWindow::TestWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TestWindow)
@@ -12,4 +14,13 @@ TestWindow::TestWindow(QWidget *parent) :
 TestWindow::~TestWindow()
 {
     delete ui;
+}
+
+void TestWindow::slotTestStarted(TestOptions &options){
+//    QDesktopWidget widget;
+    QRect mainScreenSize =  QApplication::desktop()->screenGeometry();
+    screenHeight = mainScreenSize.height();
+    screenWidth = mainScreenSize.width();
+    ui->graphicsView->resize(screenWidth, screenHeight);
+
 }

@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     testwindow.cpp
 
 HEADERS  += mainwindow.h \
-    testwindow.h
+    testwindow.h \
+    testoptions.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui

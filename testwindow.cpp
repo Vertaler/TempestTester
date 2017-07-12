@@ -6,6 +6,7 @@ TestWindow::TestWindow(QWidget *parent) :
     ui(new Ui::TestWindow)
 {
     ui->setupUi(this);
+//    ui->graphicsView->resize(this->geometry().width(), this->geometry().height());
 }
 
 TestWindow::~TestWindow()

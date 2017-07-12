@@ -18,6 +18,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotStartTestClicked(){
     TestWindow* tw = new TestWindow();
-    //tw->setWindowState( Qt::WindowFullScreen);
+    tw->setWindowFlags(Qt::Window);
     tw->showFullScreen();
 }

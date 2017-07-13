@@ -2,6 +2,7 @@
 #define TESTWINDOW_H
 
 #include <QDialog>
+#include <QGraphicsScene>
 #include "testoptions.h"
 
 namespace Ui {
@@ -20,6 +21,7 @@ class TestWindow : public QDialog
 
 private:
     Ui::TestWindow *ui;
+    QGraphicsScene* myScene;
     int screenWidth;
     int screenHeight;
 

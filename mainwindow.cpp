@@ -2,6 +2,8 @@
 #include "testwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QGraphicsView>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -20,6 +22,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::slotStartTestClicked()
 {
+
+
     testWindow->showFullScreen();
     options.maxLineCount = ui->maxCountSpinbox->value();
     options.minLineCount = ui-> minCountSpinbox->value();

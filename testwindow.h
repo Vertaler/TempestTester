@@ -7,12 +7,13 @@
 
 namespace Ui {
 class TestWindow;
+
 }
 
 enum TestStage{
     OFF,
     BLINK,
-    STABLE
+    FULL
 };
 
 class TestWindow : public QDialog

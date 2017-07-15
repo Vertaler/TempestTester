@@ -1,5 +1,6 @@
 #include "testwindow.h"
 #include "ui_testwindow.h"
+#include "backgroundgenerator.h"
 
 #include <QDesktopWidget>
 #include <QGraphicsScene>
@@ -23,7 +24,10 @@ TestWindow::TestWindow(QWidget *parent) :
     ui->graphicsView->setWindowState(Qt::WindowFullScreen);
     ui->graphicsView->setScene(myScene);
     ui-> graphicsView->setStyleSheet( "QGraphicsView { border-style: none; }" );
-    myScene->setBackgroundBrush(QBrush(Qt::black));
+
+    BackgroundGenerator backgroundGenerator;
+    QBrush brush = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, 5, RANDOM);
+    myScene->setBackgroundBrush(brush);
 
 }
 

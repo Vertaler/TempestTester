@@ -28,19 +28,24 @@ void BackgroundGenerator::setPixel(uchar *bytes, int index, int pixelColor)
 
 QBrush BackgroundGenerator::randomLinesBackground(int width, int height, int linesCount, uchar *bytesArray)
 {
-    int linesWidth = height / (2*linesCount);
-
-    int currentLine =0;
-    do{
-        for(int i=0; i< width; i++){
-            setPixel(bytesArray ,currentLine*width+i, rand()*rand());
+    if(linesCount){
+        int linesWidth = height / (2*linesCount);
+        int currentLine =0;
+        do{
+            for(int i=0; i< width; i++){
+                setPixel(bytesArray, currentLine*width+i, rand()*rand());
+            }
+            currentLine++;
+            if(!(currentLine % linesWidth)){
+                currentLine += linesWidth;
+            }
+        } while(currentLine < height);
+    } else{
+        int limit = height * width;
+        for(int i=0 ; i< limit; i++){
+            setPixel(bytesArray, i, rand()* rand());
         }
-        currentLine++;
-        if(!(currentLine % linesWidth)){
-            currentLine += linesWidth;
-        }
-    } while(currentLine < height);
-
+    }
     QImage result (bytesArray,width, height, QImage::Format_RGBA8888);
     return QBrush(result);
 }

@@ -38,6 +38,7 @@ private:
 
 public:
     explicit TestWindow(QWidget *parent = 0);
+    void keyPressEvent(QKeyEvent* e);
     ~TestWindow();
 
 public slots:

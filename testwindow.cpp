@@ -5,6 +5,7 @@
 #include <QDesktopWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QKeyEvent>
 #include <QThread>
 
 TestWindow::TestWindow(QWidget *parent) :
@@ -32,14 +33,9 @@ TestWindow::TestWindow(QWidget *parent) :
     BackgroundGenerator backgroundGenerator;
 
     fullBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, 0, RANDOM);
-    fewLineBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, 5, RANDOM);
-    lotLineBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, 15, RANDOM);
     blackBackground = QBrush(Qt::black);
 
-    myScene->setBackgroundBrush(fewLineBackground);
 
-    stage = FEW_LINES;
-    timer.start(500);
 
 }
 
@@ -50,10 +46,14 @@ TestWindow::~TestWindow()
 }
 
 void TestWindow::slotTestStarted(TestOptions &options){
+    BackgroundGenerator backgroundGenerator;
 
+    stage = OFF;
+    myScene->setBackgroundBrush(blackBackground);
 
-
-
+    fewLineBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, options.minLineCount, RANDOM);
+    lotLineBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, options.maxLineCount, RANDOM);
+    timer.start((int)(1000 * options.period));
 }
 
 void TestWindow::slotTimerTrigger()
@@ -65,5 +65,32 @@ void TestWindow::slotTimerTrigger()
     } else if(stage == LOT_LINES){
         stage = FEW_LINES;
         myScene->setBackgroundBrush(fewLineBackground);
+    }
+}
+
+void TestWindow::keyPressEvent(QKeyEvent* e)
+{
+    if(e->key() == Qt::Key_Space){
+        switch(stage){
+            case OFF:
+                myScene->setBackgroundBrush(fewLineBackground);
+                stage = FEW_LINES;
+                break;
+            case FEW_LINES:
+            case LOT_LINES:
+                myScene->setBackgroundBrush(fullBackground);
+                stage = FULL;
+                break;
+            case FULL:
+                myScene->setBackgroundBrush(blackBackground);
+                stage = OFF;
+                break;
+            default:
+                break;
+        }
+
+    } else if(e->key() == Qt::Key_Escape){
+        timer.stop();
+        hide();
     }
 }

@@ -33,7 +33,7 @@ QBrush BackgroundGenerator::randomLinesBackground(int width, int height, int lin
         int currentLine =0;
         do{
             for(int i=0; i< width; i++){
-                setPixel(bytesArray, currentLine*width+i, rand()*rand());
+                setPixel(bytesArray, currentLine*width+i, rand()*rand()* rand());
             }
             currentLine++;
             if(!(currentLine % linesWidth)){
@@ -43,7 +43,7 @@ QBrush BackgroundGenerator::randomLinesBackground(int width, int height, int lin
     } else{
         int limit = height * width;
         for(int i=0 ; i< limit; i++){
-            setPixel(bytesArray, i, rand()* rand());
+            setPixel(bytesArray, i, rand()* rand() * rand());
         }
     }
     QImage result (bytesArray,width, height, QImage::Format_RGBA8888);

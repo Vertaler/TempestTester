@@ -26,14 +26,15 @@ void BackgroundGenerator::setPixel(uchar *bytes, int index, int pixelColor)
     bytes[4*index + 3] = pixelColor;
 }
 
-QBrush BackgroundGenerator::randomLinesBackground(int width, int height, int linesCount, uchar *bytesArray)
+QBrush BackgroundGenerator::generateBackground(int width, int height, int linesCount, uchar *bytesArray, int (*drawPixel) ())
 {
+
     if(linesCount){
         int linesWidth = height / (2*linesCount);
         int currentLine =0;
         do{
             for(int i=0; i< width; i++){
-                setPixel(bytesArray, currentLine*width+i, rand()*rand()* rand());
+                setPixel(bytesArray, currentLine*width+i, drawPixel());
             }
             currentLine++;
             if(!(currentLine % linesWidth)){
@@ -43,12 +44,14 @@ QBrush BackgroundGenerator::randomLinesBackground(int width, int height, int lin
     } else{
         int limit = height * width;
         for(int i=0 ; i< limit; i++){
-            setPixel(bytesArray, i, rand()* rand() * rand());
+            setPixel(bytesArray, i, drawPixel());
         }
     }
     QImage result (bytesArray,width, height, QImage::Format_RGBA8888);
     return QBrush(result);
 }
+
+
 
 BackgroundGenerator::BackgroundGenerator()
 {
@@ -57,6 +60,7 @@ BackgroundGenerator::BackgroundGenerator()
 
 QBrush BackgroundGenerator::GenerateBackground(int width, int height, int linesCount, FillingType fillingType)
 {
+    srand(time(NULL));
     int len = 4*width*height;
     uchar* byteArray = new uchar[len];
 
@@ -65,12 +69,11 @@ QBrush BackgroundGenerator::GenerateBackground(int width, int height, int linesC
     }
 
     switch (fillingType) {
-    case RGB:
-        break;
     case RANDOM:
-        return randomLinesBackground(width, height, linesCount, byteArray);
+        return generateBackground(width, height, linesCount, byteArray, []() -> int{ return rand()*rand()*rand();});
         break;
     case WHITE:
+        return generateBackground(width, height, linesCount, byteArray, []() -> int {return 0xEEEEEEFF;});
         break;
     default:
         break;

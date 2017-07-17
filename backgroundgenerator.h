@@ -3,7 +3,6 @@
 
 #include <QBrush>
 enum FillingType{
-    RGB,
     RANDOM,
     WHITE
 };
@@ -17,8 +16,7 @@ private:
 
     int randColor();
     void setPixel(uchar* bytes, int index, int pixelColor);
-    QBrush randomLinesBackground(int width, int height, int linesCount, uchar* bytesArray);
-    QBrush rgbLinesBackground(int width, int height, int linesCount);
+    QBrush generateBackground(int width, int height, int linesCount, uchar* bytesArray, int(*drawPixel)(void));
     QBrush whiteLinesBackground(int width, int height, int linesCount);
 
 public:

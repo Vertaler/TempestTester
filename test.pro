@@ -15,12 +15,14 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     testwindow.cpp \
-    backgroundgenerator.cpp
+    backgroundgenerator.cpp \
+    bounded.cpp
 
 HEADERS  += mainwindow.h \
     testwindow.h \
     testoptions.h \
-    backgroundgenerator.h
+    backgroundgenerator.h \
+    bounded.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui

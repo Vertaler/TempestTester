@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include "testoptions.h"
+#include "bounded.h"
+
 
 namespace Ui {
 class TestWindow;
@@ -28,6 +30,7 @@ private:
     QBrush blackBackground;
     QBrush fullBackground;
 
+    TestOptions options;
     QTimer timer;
     TestStage stage;
 
@@ -39,6 +42,7 @@ private:
 public:
     explicit TestWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent* e);
+    void Update();
     ~TestWindow();
 
 public slots:

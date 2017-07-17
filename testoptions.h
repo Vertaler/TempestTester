@@ -1,11 +1,45 @@
 #ifndef TESTOPTIONS
 #define TESTOPTIONS
+#include "backgroundgenerator.h"
+#include "bounded.h"
 
+class TestOptions{
+private:
+    Bounded<int> minLineCount;
+    Bounded<int> maxLineCount;
+    Bounded<double> period;
+    FillingType fillingType;
+public:
 
-struct TestOptions{
-    int minLineCount;
-    int maxLineCount;
-    double period;
+    Bounded<int>& getMinLineCount(){
+        return minLineCount;
+    }
+    Bounded<int>& getMaxLineCount(){
+        return maxLineCount;
+    }
+    Bounded<double>& getPeriod(){
+        return period;
+    }
+    FillingType getFillingType(){
+        return fillingType;
+    }
+
+    void setMinLineCount(Bounded<int>& value){
+        minLineCount = value;
+    }
+
+    void setMaxLineCount(Bounded<int>& value){
+        maxLineCount = value;
+    }
+
+    void setPeriod(Bounded<double>& value){
+        period = value;
+    }
+
+    void setFillingType(FillingType value){
+        fillingType = value;
+    }
+
 };
 
 #endif // TESTOPTIONS

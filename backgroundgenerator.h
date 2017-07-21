@@ -16,7 +16,7 @@ private:
 
     int randColor();
     void setPixel(uchar* bytes, int index, int pixelColor);
-    QBrush generateBackground(int width, int height, int linesCount, uchar* bytesArray, int(*drawPixel)(void));
+    QBrush generateBackground(int width, int height, int linesCount, uchar bytesArray[], int(*drawPixel)(void));
     QBrush whiteLinesBackground(int width, int height, int linesCount);
 
 public:

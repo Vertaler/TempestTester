@@ -1,6 +1,7 @@
 #include "backgroundgenerator.h"
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 
 int BackgroundGenerator::randColor()
 {
@@ -26,13 +27,16 @@ void BackgroundGenerator::setPixel(uchar *bytes, int index, int pixelColor)
     bytes[4*index + 3] = pixelColor;
 }
 
-QBrush BackgroundGenerator::generateBackground(int width, int height, int linesCount, uchar *bytesArray, int (*drawPixel) ())
+QBrush BackgroundGenerator::generateBackground(int width, int height, int linesCount, uchar bytesArray[], int (*drawPixel) ())
 {
 
+    int resultHeight = height;
     if(linesCount){
         int linesWidth = height / (2*linesCount);
+        resultHeight = 2 * linesWidth;
         int currentLine = 0;
         do{
+
             for(int i=0; i< width; i++){
                 setPixel(bytesArray, currentLine*width+i, drawPixel());
             }
@@ -40,14 +44,14 @@ QBrush BackgroundGenerator::generateBackground(int width, int height, int linesC
             if(!(currentLine % linesWidth)){
                 currentLine += linesWidth;
             }
-        } while(currentLine < height);
+        } while(currentLine < resultHeight);
     } else{
         int limit = height * width;
         for(int i=0 ; i< limit; i++){
             setPixel(bytesArray, i, drawPixel());
         }
     }
-    QImage result (bytesArray,width, height, QImage::Format_RGBA8888);
+    QImage result (bytesArray,width, resultHeight, QImage::Format_RGBA8888);
     return QBrush(result);
 }
 
@@ -80,7 +84,6 @@ QBrush BackgroundGenerator::GenerateBackground(uchar *dataArray, int width, int 
     default:
         break;
     }
-    //delete[] byteArray;
     return result;
 }
 

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QGraphicsScene>
+#include <QGraphicsTextItem>
 #include <QTimer>
 #include "testoptions.h"
 #include "bounded.h"
@@ -43,6 +44,8 @@ private:
     uchar* fewLineData;
     uchar* lotLineData;
     uchar* fullBackgroundData;
+
+    QGraphicsTextItem* hint;
 
     void checkScreenSize();
 public:

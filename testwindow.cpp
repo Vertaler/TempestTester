@@ -1,12 +1,15 @@
 #include "testwindow.h"
 #include "ui_testwindow.h"
 #include "backgroundgenerator.h"
+#include "utils.h"
 
+#include <string>
 #include <QDesktopWidget>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QKeyEvent>
 #include <QThread>
+
 
 void TestWindow::checkScreenSize()
 {
@@ -51,10 +54,19 @@ TestWindow::TestWindow(QWidget *parent) :
 
 
     myScene = new QGraphicsScene();
+    ui->graphicsView->setAlignment(Qt::AlignTop|Qt::AlignLeft);
     ui->graphicsView->setWindowState(Qt::WindowFullScreen);
     ui->graphicsView->setScene(myScene);
     ui-> graphicsView->setStyleSheet( "QGraphicsView { border-style: none; }" );
 
+
+    hint = new QGraphicsTextItem();
+    hint->setPos(0,0);
+    QFont font("Calibri", 30);
+
+    hint->setDefaultTextColor(Qt::red);
+    hint->setFont(font);
+    myScene->addItem(hint);
 
     blackBackground = QBrush(Qt::black);
 }
@@ -91,6 +103,7 @@ void TestWindow::slotTestStarted(TestOptions &options){
 
 void TestWindow::slotTimerTrigger()
 {
+    hint->setPlainText("");
     if(stage == FEW_LINES){
         stage = LOT_LINES;
         myScene->setBackgroundBrush(lotLineBackground);
@@ -141,5 +154,17 @@ void TestWindow::keyPressEvent(QKeyEvent* e)
         options.setFillingType((FillingType)((int)options.getFillingType()^1));//TODO Сделать по-нормальному
     }
     Update();
+    if(e->key() == Qt::Key_Q || e->key() == Qt::Key_A){
+        myScene->setBackgroundBrush(fewLineBackground);
+    }
+    if(e->key() == Qt::Key_W || e->key() == Qt::Key_S){
+        myScene->setBackgroundBrush(lotLineBackground);
+    }
+    if(e->key() == Qt::Key_E || e->key() == Qt::Key_D){
+        std::string text = "Период мерцаний: " + to_string( options.getPeriod()->Value() ) + " (сек)";
+        hint->setPlainText(text.data());
+
+    }
+
 }
 

@@ -22,7 +22,8 @@ HEADERS  += mainwindow.h \
     testwindow.h \
     testoptions.h \
     backgroundgenerator.h \
-    bounded.h
+    bounded.h \
+    utils.h
 
 FORMS    += mainwindow.ui \
     testwindow.ui

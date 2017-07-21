@@ -21,7 +21,7 @@ private:
 
 public:
     BackgroundGenerator();
-    QBrush GenerateBackground(int width, int height, int linesCount, FillingType fillingType);
+    QBrush GenerateBackground(uchar* dataArray, int width, int height, int linesCount, FillingType fillingType);
 };
 
 #endif // BACKGROUNDGENERATOR_H

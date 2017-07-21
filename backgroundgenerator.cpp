@@ -31,7 +31,7 @@ QBrush BackgroundGenerator::generateBackground(int width, int height, int linesC
 
     if(linesCount){
         int linesWidth = height / (2*linesCount);
-        int currentLine =0;
+        int currentLine = 0;
         do{
             for(int i=0; i< width; i++){
                 setPixel(bytesArray, currentLine*width+i, drawPixel());
@@ -58,26 +58,29 @@ BackgroundGenerator::BackgroundGenerator()
 
 }
 
-QBrush BackgroundGenerator::GenerateBackground(int width, int height, int linesCount, FillingType fillingType)
+QBrush BackgroundGenerator::GenerateBackground(uchar *dataArray, int width, int height, int linesCount, FillingType fillingType)
 {
     srand(time(NULL));
     int len = 4*width*height;
-    uchar* byteArray = new uchar[len];
+    //uchar* byteArray = new uchar[len];
 
-    for(int i=3; i< len; i+=4){
-        byteArray[i] = 255;
+    for(int i=0; i< len; i++){
+        dataArray[i] = (i%4 == 3) ? 255: 0;
     }
+
+    QBrush result;
 
     switch (fillingType) {
     case RANDOM:
-        return generateBackground(width, height, linesCount, byteArray, []() -> int{ return rand()*rand()*rand();});
+        result = generateBackground(width, height, linesCount, dataArray, []() -> int{ return rand()*rand()*rand();});
         break;
     case WHITE:
-        return generateBackground(width, height, linesCount, byteArray, []() -> int {return 0xEEEEEEFF;});
+        result = generateBackground(width, height, linesCount, dataArray, []() -> int {return 0xEEEEEEFF;});
         break;
     default:
         break;
     }
-    return  QBrush(Qt::black);
+    //delete[] byteArray;
+    return result;
 }
 

@@ -36,9 +36,15 @@ private:
 
     Ui::TestWindow *ui;
     QGraphicsScene* myScene;
+
     int screenWidth;
     int screenHeight;
 
+    uchar* fewLineData;
+    uchar* lotLineData;
+    uchar* fullBackgroundData;
+
+    void checkScreenSize();
 public:
     explicit TestWindow(QWidget *parent = 0);
     void keyPressEvent(QKeyEvent* e);

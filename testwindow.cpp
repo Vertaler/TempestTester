@@ -8,6 +8,28 @@
 #include <QKeyEvent>
 #include <QThread>
 
+void TestWindow::checkScreenSize()
+{
+    QRect mainScreenSize =  QApplication::desktop()->screenGeometry();
+    int newScreenHeight = mainScreenSize.height();
+    int newScreenWidth = mainScreenSize.width();
+    if((screenWidth != newScreenWidth) || (screenHeight != newScreenHeight) ){
+
+        screenWidth = newScreenWidth;
+        screenHeight = newScreenHeight;
+
+        delete[] fewLineData;
+        delete[] lotLineData;
+        delete[] fullBackgroundData;
+
+        int len =  4 * screenWidth * screenHeight;
+        fewLineData = new uchar[len];
+        lotLineData = new uchar[len];
+        fullBackgroundData = new uchar[len];
+
+    }
+}
+
 TestWindow::TestWindow(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::TestWindow)
@@ -17,11 +39,15 @@ TestWindow::TestWindow(QWidget *parent) :
     connect(&timer, &QTimer::timeout, this, &TestWindow::slotTimerTrigger);
 
 
-    QRect mainScreenSize =  QApplication::desktop()->screenGeometry();
-    screenHeight = mainScreenSize.height();
-    screenWidth = mainScreenSize.width();
+    //to safe delete[] in checkScreenSize();
+    fewLineData = new uchar[1];
+    lotLineData = new uchar[1];
+    fullBackgroundData = new uchar[1];
+
+    checkScreenSize();
 
     ui->graphicsView->resize(screenWidth, screenHeight);
+
 
 
     myScene = new QGraphicsScene();
@@ -30,17 +56,13 @@ TestWindow::TestWindow(QWidget *parent) :
     ui-> graphicsView->setStyleSheet( "QGraphicsView { border-style: none; }" );
 
 
-    BackgroundGenerator backgroundGenerator;
-
     blackBackground = QBrush(Qt::black);
-
-
-
 }
 
 TestWindow::~TestWindow()
 {
     timer.stop();
+    delete myScene;
     delete ui;
 }
 
@@ -48,17 +70,18 @@ void TestWindow::Update()
 {
     BackgroundGenerator backgroundGenerator;
 
-    fewLineBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, options.getMinLineCount().Value(), options.getFillingType());
-    lotLineBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, options.getMaxLineCount().Value(), options.getFillingType());
-    fullBackground = backgroundGenerator.GenerateBackground(screenWidth, screenHeight, 0, options.getFillingType());
+    fewLineBackground = backgroundGenerator.GenerateBackground(fewLineData,screenWidth, screenHeight, options.getMinLineCount()->Value(), options.getFillingType());
+    lotLineBackground = backgroundGenerator.GenerateBackground(lotLineData, screenWidth, screenHeight, options.getMaxLineCount()->Value(), options.getFillingType());
+    fullBackground = backgroundGenerator.GenerateBackground(fullBackgroundData, screenWidth, screenHeight, 0, options.getFillingType());
 
-    timer.start((int)(1000 * options.getPeriod().Value()));
+    timer.start((int)(1000 * options.getPeriod()->Value()));
 }
 
 
 void TestWindow::slotTestStarted(TestOptions &options){
 
     this->options = options;
+    checkScreenSize();
 
     stage = OFF;
     myScene->setBackgroundBrush(blackBackground);
@@ -103,17 +126,17 @@ void TestWindow::keyPressEvent(QKeyEvent* e)
         timer.stop();
         hide();
     } else if(e->key() == Qt::Key_Q){
-        options.getMinLineCount().Inc();
+        options.getMinLineCount()->Inc();
     }else if(e->key() == Qt::Key_A){
-        options.getMinLineCount().Dec();
+        options.getMinLineCount()->Dec();
     }else if(e->key() == Qt::Key_W){
-        options.getMaxLineCount().Inc();
+        options.getMaxLineCount()->Inc();
     }else if(e->key() == Qt::Key_S){
-        options.getMaxLineCount().Dec();
+        options.getMaxLineCount()->Dec();
     }else if(e->key() == Qt::Key_E){
-        options.getPeriod().Dec();
+        options.getPeriod()->Dec();
     }else if(e->key() == Qt::Key_D){
-        options.getPeriod().Inc();
+        options.getPeriod()->Inc();
     }else if(e->key() == Qt::Key_Tab){
         options.setFillingType((FillingType)((int)options.getFillingType()^1));//TODO Сделать по-нормальному
     }

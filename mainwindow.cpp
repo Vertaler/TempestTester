@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
             ui-> minCountSpinbox->minimum(),
             0
         );
-    options.setMinLineCount(*minLineCount);
+    options.setMinLineCount(minLineCount);
 
 
     Bounded<int>* maxLineCount = new Bounded<int>(
@@ -27,15 +27,15 @@ MainWindow::MainWindow(QWidget *parent) :
             ui-> maxCountSpinbox->minimum(),
             0
         );
-    options.setMaxLineCount(*maxLineCount);
+    options.setMaxLineCount(maxLineCount);
 
     Bounded<double>* period = new Bounded<double>(
                 ui->periodSpinBox->singleStep(),
                 ui->periodSpinBox->maximum(),
                 ui-> periodSpinBox->minimum(),
                 0.0
-            ); //TODO
-    options.setPeriod(*period);
+            );
+    options.setPeriod(period);
 
     connect(this, &MainWindow::testStarted, testWindow, &TestWindow::slotTestStarted);
 
@@ -49,9 +49,9 @@ MainWindow::~MainWindow()
 void MainWindow::slotStartTestClicked()
 {
     testWindow->showFullScreen();
-    options.getMaxLineCount().Set(ui->maxCountSpinbox->value());
-    options.getMinLineCount().Set(ui-> minCountSpinbox->value());
-    options.getPeriod().Set(ui->periodSpinBox->value());
+    options.getMaxLineCount()->Set(ui->maxCountSpinbox->value());
+    options.getMinLineCount()->Set(ui-> minCountSpinbox->value());
+    options.getPeriod()->Set(ui->periodSpinBox->value());
     options.setFillingType( (ui->VGA->isChecked()) ? WHITE : RANDOM ) ;
     emit testStarted(options);
 }

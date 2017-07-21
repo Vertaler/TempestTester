@@ -16,10 +16,17 @@ class TestWindow;
 
 enum TestStage{
     OFF,
-    FEW_LINES,
-    LOT_LINES,
+    BLINK,
     FULL
 };
+
+enum BlinkStage{
+    FEW_LINES,
+    FULL_AFTER_FEW,
+    LOT_LINES,
+    FULL_AFTER_LOT
+};
+
 
 class TestWindow : public QDialog
 {
@@ -34,6 +41,7 @@ private:
     TestOptions options;
     QTimer timer;
     TestStage stage;
+    BlinkStage blinkStage;
 
     Ui::TestWindow *ui;
     QGraphicsScene* myScene;

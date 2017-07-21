@@ -104,12 +104,17 @@ void TestWindow::slotTestStarted(TestOptions &options){
 void TestWindow::slotTimerTrigger()
 {
     hint->setPlainText("");
-    if(stage == FEW_LINES){
-        stage = LOT_LINES;
+    if(blinkStage == FEW_LINES){
+        blinkStage = FULL_AFTER_FEW;
+        myScene->setBackgroundBrush(fullBackground);
+    } else if(blinkStage == FULL_AFTER_FEW){
+        blinkStage = LOT_LINES;
         myScene->setBackgroundBrush(lotLineBackground);
-
-    } else if(stage == LOT_LINES){
-        stage = FEW_LINES;
+    } else if (blinkStage == LOT_LINES){
+        blinkStage = FULL_AFTER_LOT;
+        myScene->setBackgroundBrush(fullBackground);
+    } else if (blinkStage == FULL_AFTER_LOT){
+        blinkStage = FEW_LINES;
         myScene->setBackgroundBrush(fewLineBackground);
     }
 }
@@ -120,10 +125,9 @@ void TestWindow::keyPressEvent(QKeyEvent* e)
         switch(stage){
             case OFF:
                 myScene->setBackgroundBrush(fewLineBackground);
-                stage = FEW_LINES;
+                stage = BLINK;
                 break;
-            case FEW_LINES:
-            case LOT_LINES:
+            case BLINK:
                 myScene->setBackgroundBrush(fullBackground);
                 stage = FULL;
                 break;

@@ -104,6 +104,9 @@ void TestWindow::slotTestStarted(TestOptions &options){
 void TestWindow::slotTimerTrigger()
 {
     hint->setPlainText("");
+    if(stage != BLINK){
+        return;
+    }
     if(blinkStage == FEW_LINES){
         blinkStage = FULL_AFTER_FEW;
         myScene->setBackgroundBrush(fullBackground);
